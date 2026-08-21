@@ -30,5 +30,5 @@ import { useCheckoutStore } from '@/stores/useCheckoutStore'
 import { formatCurrency } from '@/utils/money'
 
 const store = useCheckoutStore()
-const balanceLabel = computed(() => formatCurrency(store.checkout?.customer.balance ?? 0))
+const balanceLabel = computed(() => formatCurrency(store.checkout?.customer.balance ?? 0, store.checkout?.customer.currency ?? 'rub'))
 </script>

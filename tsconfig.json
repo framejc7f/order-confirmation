@@ -12,5 +12,5 @@
     },
     "types": ["vite/client", "web-bluetooth"]
   },
-  "include": ["src", "backend/src"]
+  "include": ["src", "backend/src", "shared"]
 }

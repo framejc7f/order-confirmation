@@ -18,6 +18,7 @@ import { formatCurrency } from '@/utils/money'
 
 const props = defineProps<{
   total: number
+  currency: string
   balancePayment: boolean
   submitting: boolean
   disabled: boolean
@@ -30,6 +31,8 @@ const emit = defineEmits<{
 
 const label = computed(() => {
   if (props.submitting) return 'Оформление...'
-  return props.balancePayment ? `Оплатить с баланса · ${formatCurrency(props.total)}` : `Оплатить ${formatCurrency(props.total)}`
+  return props.balancePayment
+    ? `Оплатить с баланса · ${formatCurrency(props.total, props.currency)}`
+    : `Оплатить ${formatCurrency(props.total, props.currency)}`
 })
 </script>

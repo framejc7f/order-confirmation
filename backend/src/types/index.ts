@@ -1,4 +1,4 @@
-export type Currency = 'RUB'
+export type Currency = 'rub' | 'usd'
 
 export type Product = {
   id: string
