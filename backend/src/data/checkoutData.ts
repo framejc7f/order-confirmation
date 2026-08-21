@@ -21,10 +21,11 @@ export const checkoutData: CheckoutPayload = {
   ],
   paymentMethods: [
     { id: 'card', name: 'Card / bank transfer', logo: '/logos/card.svg', commissionPercent: 0, surcharge: 0, available: true },
-    { id: 'sbp', name: 'Instant transfer', logo: '/logos/sbp.svg', commissionPercent: 1.5, surcharge: 0, available: true },
-    { id: 'balance', name: 'Balance payment', logo: '/logos/balance.svg', commissionPercent: 0, surcharge: 0, available: true, balancePayment: true }
+    { id: 'sbp', name: 'Instant transfer', logo: '/logos/sbp.svg', commissionPercent: 1.5, surcharge: 100, available: true },
+    { id: 'balance', name: 'Balance payment', logo: '/logos/balance.svg', commissionPercent: 0, surcharge: 0, available: true, balancePayment: true },
+    { id: 'invoice', name: 'Corporate invoice', logo: '/logos/card.svg', commissionPercent: 0, surcharge: 100, available: false }
   ],
-  customer: { balance: 7000, currency: 'RUB' },
+  customer: { balance: 6200, currency: 'RUB' },
   defaults: { fulfillmentTypeId: 'standard', paymentMethodId: 'card' }
 }
 

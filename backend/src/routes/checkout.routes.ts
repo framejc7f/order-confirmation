@@ -1,8 +1,6 @@
 import { Router } from 'express'
-import { checkoutData } from '../data/checkoutData'
+import { getCheckoutController } from '../controllers/checkout.controller'
 
 export const checkoutRouter = Router()
 
-checkoutRouter.get('/', (_req, res) => {
-  res.json(checkoutData)
-})
+checkoutRouter.get('/', getCheckoutController)
