@@ -3,7 +3,7 @@
     <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
       <RouterLink to="/" class="flex items-center gap-2 text-sm font-bold tracking-wide text-zinc-950" aria-label="На главную">
         <ShoppingBag class="h-5 w-5" />
-        Order Demo
+        БРОКЕР
       </RouterLink>
 
       <nav class="hidden items-center gap-7 text-sm font-medium text-zinc-600 md:flex" aria-label="Основная навигация">

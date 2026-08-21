@@ -18,6 +18,9 @@
         <Badge v-else-if="method.balancePayment" variant="success">Баланс</Badge>
       </span>
       <span class="mt-1 block text-sm text-zinc-600">{{ feeLabel }}</span>
+      <span v-if="method.balancePayment" class="mt-1 block text-sm text-zinc-600">
+        Доступный баланс: {{ formatCurrency(balance, currency) }}
+      </span>
       <span v-if="disabledReason" class="mt-2 block text-sm font-medium text-red-700">{{ disabledReason }}</span>
     </span>
     <span class="shrink-0 text-right text-sm font-bold text-zinc-950">{{ formatCurrency(total, currency) }}</span>
@@ -39,6 +42,7 @@ const props = defineProps<{
   disabledReason?: string
   total: number
   currency: string
+  balance: number
 }>()
 
 const feeLabel = computed(() => {

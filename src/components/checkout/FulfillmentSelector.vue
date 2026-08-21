@@ -1,8 +1,8 @@
 <template>
   <Card class="p-5">
     <div class="mb-4">
-      <h2 class="text-lg font-bold text-zinc-950">Получение</h2>
-      <p class="text-sm text-zinc-600">Выберите удобный вариант доставки или выдачи.</p>
+      <h2 class="text-lg font-bold text-zinc-950">Выберите тип клада</h2>
+      <p class="text-sm text-zinc-600">Выберите удобный вариант получения товара.</p>
     </div>
     <RadioGroup :model-value="modelValue" @update:model-value="emit('update:modelValue', String($event))">
       <FulfillmentOption

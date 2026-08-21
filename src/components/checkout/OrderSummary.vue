@@ -12,7 +12,7 @@
         <span class="font-medium text-emerald-700">−{{ formatCurrency(discountAmount, currency) }}</span>
       </div>
       <div v-if="fulfillmentSurcharge" class="flex justify-between gap-4">
-        <span class="text-zinc-600">Получение</span>
+        <span class="text-zinc-600">Тип клада</span>
         <span class="font-medium text-zinc-950">+{{ formatCurrency(fulfillmentSurcharge, currency) }}</span>
       </div>
       <div v-if="paymentCommission" class="flex justify-between gap-4">

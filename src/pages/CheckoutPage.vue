@@ -2,7 +2,7 @@
   <main class="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
     <section class="mb-8 max-w-3xl">
       <p class="text-sm font-semibold uppercase tracking-wide text-zinc-500">Подтверждение заказа</p>
-      <h1 class="mt-2 text-3xl font-bold tracking-tight text-zinc-950 sm:text-4xl">Проверьте товар, получение и оплату</h1>
+      <h1 class="mt-2 text-3xl font-bold tracking-tight text-zinc-950 sm:text-4xl">Подтверждение заказа</h1>
     </section>
 
     <section v-if="loading" class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_380px]">
@@ -37,6 +37,7 @@
           :totals="paymentTotals"
           :disabled-map="paymentDisabledMap"
           :currency="checkout.product.currency"
+          :balance="checkout.customer.balance"
           @update:model-value="handlePaymentChange"
         />
       </div>
@@ -53,14 +54,6 @@
           :show-balance="Boolean(selectedPayment?.balancePayment)"
           :balance="checkout.customer.balance"
           :remaining-balance="remainingBalance"
-        />
-        <BalanceCard
-          :balance="checkout.customer.balance"
-          :total="total"
-          :remaining-balance="remainingBalance"
-          :currency="checkout.product.currency"
-          :selected-balance-payment="Boolean(selectedPayment?.balancePayment)"
-          :can-pay="canPayFromBalance"
         />
         <CheckoutActions
           :total="total"
@@ -83,7 +76,6 @@ import { useRouter } from 'vue-router'
 import Alert from '@/components/ui/Alert.vue'
 import Button from '@/components/ui/Button.vue'
 import Skeleton from '@/components/ui/Skeleton.vue'
-import BalanceCard from '@/components/checkout/BalanceCard.vue'
 import CheckoutActions from '@/components/checkout/CheckoutActions.vue'
 import FulfillmentSelector from '@/components/checkout/FulfillmentSelector.vue'
 import OrderSummary from '@/components/checkout/OrderSummary.vue'

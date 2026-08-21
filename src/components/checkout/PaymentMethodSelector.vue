@@ -14,6 +14,7 @@
         :disabled-reason="disabledMap[method.id]"
         :total="totals[method.id] ?? 0"
         :currency="currency"
+        :balance="balance"
         @select="emit('update:modelValue', $event)"
       />
     </RadioGroup>
@@ -32,6 +33,7 @@ defineProps<{
   totals: Record<string, number>
   disabledMap: Record<string, string | undefined>
   currency: string
+  balance: number
 }>()
 
 const emit = defineEmits<{
