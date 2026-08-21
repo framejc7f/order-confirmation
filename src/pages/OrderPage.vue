@@ -18,7 +18,7 @@
           <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h1 class="text-3xl font-bold tracking-tight text-zinc-950">Заказ № {{ order.id }}</h1>
-              <p class="mt-1 text-sm text-zinc-600">Статус: Оплачен</p>
+              <p class="mt-1 text-sm text-zinc-600">Статус: {{ statusLabel }}</p>
             </div>
             <p class="text-sm text-zinc-500">{{ createdAtLabel }}</p>
           </div>
@@ -27,7 +27,7 @@
         <Card class="overflow-hidden">
           <div class="grid gap-5 p-5 sm:grid-cols-[160px_1fr]">
             <div class="flex aspect-square items-center justify-center rounded-lg bg-zinc-50 p-4">
-              <img class="h-full w-full object-contain" :src="order.product.image" :alt="order.product.name" />
+              <img class="h-full w-full object-contain" :src="order.product.image" :alt="`${order.product.name} image`" />
             </div>
             <div class="space-y-4">
               <div>
@@ -43,7 +43,7 @@
                 <div class="rounded-lg bg-zinc-50 p-4">
                   <p class="text-sm text-zinc-600">Способ оплаты</p>
                   <div class="mt-1 flex items-center gap-2">
-                    <img class="h-6 w-6 rounded border border-zinc-200 bg-white p-1" :src="order.payment.logo" alt="" />
+                    <img class="h-6 w-6 rounded border border-zinc-200 bg-white p-1" :src="order.payment.logo" :alt="`${order.payment.name} logo`" />
                     <p class="font-semibold text-zinc-950">{{ order.payment.name }}</p>
                   </div>
                 </div>
@@ -61,14 +61,21 @@
           :payment-commission="order.pricing.paymentCommission"
           :payment-surcharge="order.pricing.paymentSurcharge"
           :total="order.pricing.total"
+          :currency="order.currency"
           :show-balance="order.payment.balancePayment === true"
           :balance="order.balanceBefore"
           :remaining-balance="order.balanceAfter"
         />
         <Card class="p-5">
-          <div class="flex justify-between gap-4 text-sm">
-            <span class="text-zinc-600">Остаток баланса</span>
-            <span class="font-semibold text-zinc-950">{{ formatCurrency(order.balanceAfter) }}</span>
+          <div class="space-y-3 text-sm">
+            <div class="flex justify-between gap-4">
+              <span class="text-zinc-600">Баланс до</span>
+              <span class="font-semibold text-zinc-950">{{ formatCurrency(order.balanceBefore, order.currency) }}</span>
+            </div>
+            <div class="flex justify-between gap-4">
+              <span class="text-zinc-600">Баланс после</span>
+              <span class="font-semibold text-emerald-700">{{ formatCurrency(order.balanceAfter, order.currency) }}</span>
+            </div>
           </div>
           <RouterLink to="/" class="mt-5 inline-flex h-11 w-full items-center justify-center rounded-md bg-zinc-950 px-5 text-sm font-semibold text-white transition-colors hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 focus-visible:ring-offset-2">
             Вернуться к покупкам
@@ -96,6 +103,11 @@ const route = useRoute()
 const order = ref<Order | null>(null)
 const loading = ref(false)
 const error = ref('')
+
+const statusLabel = computed(() => {
+  if (!order.value) return ''
+  return order.value.status === 'paid' ? 'Оплачен' : order.value.status
+})
 
 const createdAtLabel = computed(() => {
   if (!order.value) return ''

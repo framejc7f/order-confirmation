@@ -4,12 +4,13 @@
       <h2 class="text-lg font-bold text-zinc-950">Получение</h2>
       <p class="text-sm text-zinc-600">Выберите удобный вариант доставки или выдачи.</p>
     </div>
-    <RadioGroup :model-value="modelValue" @update:model-value="emit('update:modelValue', $event)">
+    <RadioGroup :model-value="modelValue" @update:model-value="emit('update:modelValue', String($event))">
       <FulfillmentOption
         v-for="option in options"
         :key="option.id"
         :option="option"
         :selected="option.id === modelValue"
+        :currency="currency"
         @select="emit('update:modelValue', $event)"
       />
     </RadioGroup>
@@ -25,6 +26,7 @@ import type { FulfillmentType } from '@/types/checkout'
 defineProps<{
   options: FulfillmentType[]
   modelValue: string
+  currency: string
 }>()
 
 const emit = defineEmits<{

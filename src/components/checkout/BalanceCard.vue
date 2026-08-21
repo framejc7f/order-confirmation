@@ -11,19 +11,19 @@
     <div class="mt-4 space-y-2 text-sm">
       <div class="flex justify-between gap-4">
         <span class="text-zinc-600">Баланс</span>
-        <span class="font-medium text-zinc-950">{{ formatCurrency(balance) }}</span>
+        <span class="font-medium text-zinc-950">{{ formatCurrency(balance, currency) }}</span>
       </div>
       <div v-if="selectedBalancePayment" class="flex justify-between gap-4">
         <span class="text-zinc-600">К оплате</span>
-        <span class="font-medium text-zinc-950">{{ formatCurrency(total) }}</span>
+        <span class="font-medium text-zinc-950">{{ formatCurrency(total, currency) }}</span>
       </div>
       <div v-if="selectedBalancePayment && canPay" class="flex justify-between gap-4">
         <span class="text-zinc-600">После оплаты</span>
-        <span class="font-medium text-emerald-700">{{ formatCurrency(remainingBalance) }}</span>
+        <span class="font-medium text-emerald-700">{{ formatCurrency(remainingBalance, currency) }}</span>
       </div>
       <div v-if="selectedBalancePayment && !canPay" class="flex justify-between gap-4">
         <span class="text-zinc-600">Необходимо ещё</span>
-        <span class="font-medium text-red-700">{{ formatCurrency(Math.abs(remainingBalance)) }}</span>
+        <span class="font-medium text-red-700">{{ formatCurrency(Math.abs(remainingBalance), currency) }}</span>
       </div>
     </div>
 
@@ -44,6 +44,7 @@ const props = defineProps<{
   balance: number
   total: number
   remainingBalance: number
+  currency: string
   selectedBalancePayment: boolean
   canPay: boolean
 }>()

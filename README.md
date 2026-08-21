@@ -63,7 +63,7 @@ npm run build
 
 ## Pricing Formula
 
-All money values are numbers until display formatting.
+All money values are numbers until display formatting. The backend remains the authoritative source for totals, while the frontend only shows an instant preview based on the same shared pricing rules.
 
 ```text
 discountedPrice = basePrice - discountAmount
@@ -72,7 +72,7 @@ paymentCommission = (subtotal + fulfillmentSurcharge) * commissionPercent / 100
 total = subtotal + fulfillmentSurcharge + paymentCommission + paymentSurcharge
 ```
 
-Frontend and backend both use `Math.round` through centralized `roundMoney()` helpers.
+Frontend and backend both use `Math.round` through centralized `roundMoney()` helpers and format currency from the product's `currency` code (`rub` or `usd`). Unknown values safely fall back to `RUB`.
 
 ## Balance Payment
 
@@ -88,3 +88,7 @@ Balance payment is available only when the selected total is not greater than th
 6. Submit the order.
 7. The app redirects to `/orders/:id`.
 8. Refresh the order page; it loads the full order from the backend API.
+
+## Mock Backend Limitations
+
+This project intentionally uses an in-memory mock backend. Order data lives in process memory and resets when the backend process restarts. There is no real database, payment provider, authentication, or external integration.

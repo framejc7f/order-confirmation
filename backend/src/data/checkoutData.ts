@@ -7,7 +7,7 @@ export const checkoutData: CheckoutPayload = {
     location: 'Kazan / Vakhitovsky',
     image: '/product-coffee.svg',
     basePrice: 6500,
-    currency: 'RUB',
+    currency: 'rub',
     packageSize: 0.5,
     unit: 'kg',
     hasDiscount: true,
@@ -25,7 +25,7 @@ export const checkoutData: CheckoutPayload = {
     { id: 'balance', name: 'Balance payment', logo: '/logos/balance.svg', commissionPercent: 0, surcharge: 0, available: true, balancePayment: true },
     { id: 'invoice', name: 'Corporate invoice', logo: '/logos/card.svg', commissionPercent: 0, surcharge: 100, available: false }
   ],
-  customer: { balance: 6200, currency: 'RUB' },
+  customer: { balance: 6200, currency: 'rub' },
   defaults: { fulfillmentTypeId: 'standard', paymentMethodId: 'card' }
 }
 
