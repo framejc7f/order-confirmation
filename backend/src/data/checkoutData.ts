@@ -16,14 +16,14 @@ export const checkoutData: CheckoutPayload = {
   },
   fulfillmentTypes: [
     { id: 'standard', name: 'Pickup locker', surcharge: 0 },
-    // { id: 'express', name: 'Courier delivery', surcharge: 300 },
-    // { id: 'premium', name: 'Priority handoff', surcharge: 700 }
+    { id: 'express', name: 'Courier delivery', surcharge: 300 },
+    { id: 'premium', name: 'Priority handoff', surcharge: 700 }
   ],
   paymentMethods: [
     { id: 'card', name: 'Card / bank transfer', logo: '/logos/card.svg', commissionPercent: 0, surcharge: 0, available: true },
     { id: 'sbp', name: 'Instant transfer', logo: '/logos/sbp.svg', commissionPercent: 1.5, surcharge: 100, available: true },
     { id: 'balance', name: 'Balance payment', logo: '/logos/balance.svg', commissionPercent: 0, surcharge: 0, available: true, balancePayment: true },
-    { id: 'invoice', name: 'Corporate invoice', logo: '/logos/card.svg', commissionPercent: 0, surcharge: 100, available: true }
+    { id: 'invoice', name: 'Corporate invoice', logo: '/logos/card.svg', commissionPercent: 0, surcharge: 100, available: false }
   ],
   customer: { balance: 6200, currency: 'RUB' },
   defaults: { fulfillmentTypeId: 'standard', paymentMethodId: 'card' }
