@@ -29,12 +29,14 @@
         <FulfillmentSelector
           v-model="selectedFulfillmentTypeId"
           :options="checkout.fulfillmentTypes"
+          :currency="checkout.product.currency"
         />
         <PaymentMethodSelector
           :model-value="selectedPaymentMethodId"
           :methods="checkout.paymentMethods"
           :totals="paymentTotals"
           :disabled-map="paymentDisabledMap"
+          :currency="checkout.product.currency"
           @update:model-value="handlePaymentChange"
         />
       </div>
@@ -47,6 +49,7 @@
           :payment-commission="paymentCommission"
           :payment-surcharge="paymentSurcharge"
           :total="total"
+          :currency="checkout.product.currency"
           :show-balance="Boolean(selectedPayment?.balancePayment)"
           :balance="checkout.customer.balance"
           :remaining-balance="remainingBalance"
@@ -55,11 +58,13 @@
           :balance="checkout.customer.balance"
           :total="total"
           :remaining-balance="remainingBalance"
+          :currency="checkout.product.currency"
           :selected-balance-payment="Boolean(selectedPayment?.balancePayment)"
           :can-pay="canPayFromBalance"
         />
         <CheckoutActions
           :total="total"
+          :currency="checkout.product.currency"
           :balance-payment="Boolean(selectedPayment?.balancePayment)"
           :submitting="submitting"
           :disabled="submitDisabled"
@@ -86,7 +91,6 @@ import PaymentMethodSelector from '@/components/checkout/PaymentMethodSelector.v
 import ProductCard from '@/components/checkout/ProductCard.vue'
 import { useCheckoutPricing } from '@/composables/useCheckoutPricing'
 import { useCheckoutStore } from '@/stores/useCheckoutStore'
-import { calculatePricing } from '@/utils/pricing'
 
 const router = useRouter()
 const store = useCheckoutStore()
@@ -109,37 +113,20 @@ const {
   paymentSurcharge,
   total,
   canPayFromBalance,
-  remainingBalance
+  remainingBalance,
+  paymentTotals,
+  paymentDisabledMap
 } = useCheckoutPricing(checkout, selectedFulfillmentTypeId, selectedPaymentMethodId)
-
-const paymentTotals = computed(() => {
-  if (!checkout.value || !selectedFulfillment.value) return {}
-
-  return Object.fromEntries(
-    checkout.value.paymentMethods.map((method) => [
-      method.id,
-      calculatePricing(checkout.value!.product, selectedFulfillment.value!, method).total
-    ])
-  )
-})
-
-const paymentDisabledMap = computed<Record<string, string | undefined>>(() => {
-  if (!checkout.value) return {}
-
-  return Object.fromEntries(
-    checkout.value.paymentMethods.map((method) => {
-      if (!method.available) return [method.id, 'Способ оплаты недоступен']
-      if (method.balancePayment && checkout.value!.customer.balance < (paymentTotals.value[method.id] ?? 0)) {
-        return [method.id, 'Недостаточно средств']
-      }
-      return [method.id, undefined]
-    })
-  )
-})
 
 const submitDisabled = computed(() => {
   const disabledReason = paymentDisabledMap.value[selectedPaymentMethodId.value]
-  return Boolean(disabledReason || submitting.value || !checkout.value || !selectedFulfillment.value || !selectedPayment.value)
+  return Boolean(
+    disabledReason ||
+      submitting.value ||
+      !checkout.value ||
+      !selectedFulfillment.value ||
+      !selectedPayment.value
+  )
 })
 
 function handlePaymentChange(id: string) {

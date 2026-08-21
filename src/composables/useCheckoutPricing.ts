@@ -7,12 +7,12 @@ export function useCheckoutPricing(
   fulfillmentTypeId: Ref<string>,
   paymentMethodId: Ref<string>
 ) {
-  const selectedFulfillment = computed(() =>
-    checkout.value?.fulfillmentTypes.find((item) => item.id === fulfillmentTypeId.value) ?? null
+  const selectedFulfillment = computed(
+    () => checkout.value?.fulfillmentTypes.find((item) => item.id === fulfillmentTypeId.value) ?? null
   )
 
-  const selectedPayment = computed(() =>
-    checkout.value?.paymentMethods.find((item) => item.id === paymentMethodId.value) ?? null
+  const selectedPayment = computed(
+    () => checkout.value?.paymentMethods.find((item) => item.id === paymentMethodId.value) ?? null
   )
 
   const pricing = computed(() => {
@@ -30,6 +30,7 @@ export function useCheckoutPricing(
 
     return calculatePricing(checkout.value.product, selectedFulfillment.value, selectedPayment.value)
   })
+
   const subtotal = computed(() => pricing.value.subtotal)
   const discountAmount = computed(() => pricing.value.discountAmount)
   const discountedPrice = computed(() => pricing.value.discountedPrice)
@@ -37,10 +38,56 @@ export function useCheckoutPricing(
   const paymentCommission = computed(() => pricing.value.paymentCommission)
   const paymentSurcharge = computed(() => pricing.value.paymentSurcharge)
   const total = computed(() => pricing.value.total)
-  const remainingBalance = computed(() => (checkout.value?.customer.balance ?? 0) - total.value)
+
+  const customerBalance = computed(() => checkout.value?.customer.balance ?? 0)
+  const isBalancePayment = computed(() => selectedPayment.value?.balancePayment === true)
+  const remainingBalance = computed(() => customerBalance.value - total.value)
   const canPayFromBalance = computed(() => {
-    if (!selectedPayment.value?.balancePayment) return true
-    return remainingBalance.value >= 0
+    if (!isBalancePayment.value) {
+      return true
+    }
+
+    return customerBalance.value >= total.value
+  })
+  const balancePaymentDisabledReason = computed(() => {
+    if (!isBalancePayment.value) {
+      return undefined
+    }
+
+    return customerBalance.value >= total.value ? undefined : 'Недостаточно средств'
+  })
+
+  const paymentTotals = computed<Record<string, number>>(() => {
+    if (!checkout.value || !selectedFulfillment.value) {
+      return {}
+    }
+
+    return Object.fromEntries(
+      checkout.value.paymentMethods.map((method) => [
+        method.id,
+        calculatePricing(checkout.value!.product, selectedFulfillment.value!, method).total
+      ])
+    )
+  })
+
+  const paymentDisabledMap = computed<Record<string, string | undefined>>(() => {
+    if (!checkout.value) {
+      return {}
+    }
+
+    return Object.fromEntries(
+      checkout.value.paymentMethods.map((method) => {
+        if (!method.available) {
+          return [method.id, 'Способ оплаты недоступен']
+        }
+
+        if (method.balancePayment && customerBalance.value < (paymentTotals.value[method.id] ?? 0)) {
+          return [method.id, 'Недостаточно средств']
+        }
+
+        return [method.id, undefined]
+      })
+    )
   })
 
   return {
@@ -53,7 +100,12 @@ export function useCheckoutPricing(
     paymentCommission,
     paymentSurcharge,
     total,
+    customerBalance,
+    isBalancePayment,
     canPayFromBalance,
-    remainingBalance
+    remainingBalance,
+    balancePaymentDisabledReason,
+    paymentTotals,
+    paymentDisabledMap
   }
 }

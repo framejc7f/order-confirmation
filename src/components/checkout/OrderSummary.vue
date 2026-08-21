@@ -5,23 +5,23 @@
     <div class="mt-4 space-y-3 text-sm">
       <div class="flex justify-between gap-4">
         <span class="text-zinc-600">Стоимость товара</span>
-        <span class="font-medium text-zinc-950">{{ formatCurrency(productPrice) }}</span>
+        <span class="font-medium text-zinc-950">{{ formatCurrency(productPrice, currency) }}</span>
       </div>
       <div v-if="discountAmount" class="flex justify-between gap-4">
         <span class="text-zinc-600">Скидка</span>
-        <span class="font-medium text-emerald-700">−{{ formatCurrency(discountAmount) }}</span>
+        <span class="font-medium text-emerald-700">−{{ formatCurrency(discountAmount, currency) }}</span>
       </div>
       <div v-if="fulfillmentSurcharge" class="flex justify-between gap-4">
         <span class="text-zinc-600">Получение</span>
-        <span class="font-medium text-zinc-950">+{{ formatCurrency(fulfillmentSurcharge) }}</span>
+        <span class="font-medium text-zinc-950">+{{ formatCurrency(fulfillmentSurcharge, currency) }}</span>
       </div>
       <div v-if="paymentCommission" class="flex justify-between gap-4">
         <span class="text-zinc-600">Комиссия</span>
-        <span class="font-medium text-zinc-950">+{{ formatCurrency(paymentCommission) }}</span>
+        <span class="font-medium text-zinc-950">+{{ formatCurrency(paymentCommission, currency) }}</span>
       </div>
       <div v-if="paymentSurcharge" class="flex justify-between gap-4">
         <span class="text-zinc-600">Доплата</span>
-        <span class="font-medium text-zinc-950">+{{ formatCurrency(paymentSurcharge) }}</span>
+        <span class="font-medium text-zinc-950">+{{ formatCurrency(paymentSurcharge, currency) }}</span>
       </div>
     </div>
 
@@ -29,18 +29,18 @@
 
     <div class="flex items-end justify-between gap-4">
       <span class="text-sm font-medium text-zinc-600">Итого к оплате</span>
-      <span class="text-3xl font-bold tracking-tight text-zinc-950">{{ formatCurrency(total) }}</span>
+      <span class="text-3xl font-bold tracking-tight text-zinc-950">{{ formatCurrency(total, currency) }}</span>
     </div>
 
     <div v-if="showBalance" class="mt-4 rounded-lg bg-zinc-50 p-4 text-sm">
       <div class="flex justify-between gap-4">
         <span class="text-zinc-600">Баланс</span>
-        <span class="font-medium text-zinc-950">{{ formatCurrency(balance) }}</span>
+        <span class="font-medium text-zinc-950">{{ formatCurrency(balance, currency) }}</span>
       </div>
       <div class="mt-2 flex justify-between gap-4">
         <span class="text-zinc-600">После оплаты</span>
         <span :class="remainingBalance >= 0 ? 'font-medium text-emerald-700' : 'font-medium text-red-700'">
-          {{ formatCurrency(remainingBalance) }}
+          {{ formatCurrency(remainingBalance, currency) }}
         </span>
       </div>
     </div>
@@ -59,6 +59,7 @@ defineProps<{
   paymentCommission: number
   paymentSurcharge: number
   total: number
+  currency: string
   showBalance: boolean
   balance: number
   remainingBalance: number

@@ -4,7 +4,7 @@
       <h2 class="text-lg font-bold text-zinc-950">Оплата</h2>
       <p class="text-sm text-zinc-600">Итог пересчитывается для каждого способа.</p>
     </div>
-    <RadioGroup :model-value="modelValue" @update:model-value="emit('update:modelValue', $event)">
+    <RadioGroup :model-value="modelValue" @update:model-value="emit('update:modelValue', String($event))">
       <PaymentMethodCard
         v-for="method in methods"
         :key="method.id"
@@ -13,6 +13,7 @@
         :disabled="disabledMap[method.id] !== undefined"
         :disabled-reason="disabledMap[method.id]"
         :total="totals[method.id] ?? 0"
+        :currency="currency"
         @select="emit('update:modelValue', $event)"
       />
     </RadioGroup>
@@ -30,6 +31,7 @@ defineProps<{
   modelValue: string
   totals: Record<string, number>
   disabledMap: Record<string, string | undefined>
+  currency: string
 }>()
 
 const emit = defineEmits<{
